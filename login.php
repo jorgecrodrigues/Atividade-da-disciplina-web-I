@@ -22,8 +22,6 @@ if ($_POST) {
         // Salva as informações do usuário na sessão.
         $_SESSION["user"] = ['name' => $user['name'], 'email' => $user['email']];
         header('Location: index.php');
-    } else {
-
     }
 }
 ?>
@@ -63,7 +61,7 @@ if ($_POST) {
             </div>
             <div class="modal-body">
                 <div class="content">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" method="post" action="">
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
                                 <label class="form-label" for="email">
@@ -137,7 +135,6 @@ if ($_POST) {
                                        placeholder="Digite seu email">
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
                                 <label class="form-label" for="password">
@@ -149,17 +146,21 @@ if ($_POST) {
                                        placeholder="Digite sua senha">
                             </div>
                         </div>
-
                         <div class="form-group mt-2 pt-2">
                             <div class="col-3 col-sm-12"></div>
                             <div class="col-9 col-sm-12">
                                 <button class="btn btn-primary">Login</button>
                             </div>
                         </div>
-
                     </form>
                 </div>
             </div>
+            <?php if ($_POST && !$user): ?>
+                <div class="modal-footer">
+                    <p class="animated shake text-center text-error">Seu email ou senha não correspondem com nenhum
+                        registro!</p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
