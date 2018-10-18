@@ -30,3 +30,16 @@ body {
     margin-right: 30px;
     width: 80px;
 }
+
+.modal-overlay {
+    background: rgba(248, 249, 250, .85) !important;
+}
+
+.modal-container {
+    max-height: 85vh;
+    max-width: 717px;
+}
+
+.modal-header {
+    padding: .8rem .2rem !important;
+}

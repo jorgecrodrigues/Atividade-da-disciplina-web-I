@@ -42,7 +42,7 @@ while ($row = $stmt->fetch()) {
             <p class="empty-subtitle">Bem vindo <?php echo $_SESSION['user']['name'] ?></p>
             <p class="empty-subtitle">Clique no botão abaixo para cadastrar um novo minicurso</p>
             <div class="empty-action">
-                <button class="btn">Send a message</button>
+                <button id="new" class="btn">Adicionar minicurso</button>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@ while ($row = $stmt->fetch()) {
             <a href="#tabs">Anteriores</a>
         </li>
         <li class="tab-item">
-            <a id="new" href="#tabs">Cadastrar novo</a>
+            <a id="sync" href="#sync">Sincronizar</a>
         </li>
     </ul>
 
@@ -69,7 +69,7 @@ while ($row = $stmt->fetch()) {
     <?php foreach ($courses as $course): ?>
         <div class="tile">
             <div class="tile-icon">
-                <object class="example-tile-icon" type="image/svg+xml" data="svg/studying.svg"></object>
+                <object class="example-tile-icon" type="image/svg+xml" data="svg/user%20(1).svg"></object>
             </div>
             <div class="tile-content">
                 <p class="tile-title">The Avengers</p>
@@ -84,6 +84,90 @@ while ($row = $stmt->fetch()) {
             </div>
         </div>
     <?php endforeach; ?>
+
+    <!-- Formulário de cadastro de minicurso -->
+    <div class="modal new" id="modal-id">
+        <a href="#close" class="modal-overlay" aria-label="Close"></a>
+        <div class="modal-container">
+            <div class="modal-header">
+                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <div class="modal-title h5">Modal title</div>
+            </div>
+            <div class="modal-body">
+                <div class="content">
+                    <form class="form-horizontal" action="#forms">
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="input-example-4">Name</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <input class="form-input" id="input-example-4" type="text" placeholder="Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="input-example-5">Email</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <input class="form-input" id="input-example-5" type="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label">Gender</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <label class="form-radio">
+                                    <input type="radio" name="gender"><i class="form-icon"></i> Male
+                                </label>
+                                <label class="form-radio">
+                                    <input type="radio" name="gender" checked=""><i class="form-icon"></i> Female
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label">Source</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <select class="form-select" multiple="">
+                                    <option>Slack</option>
+                                    <option>Skype</option>
+                                    <option>Hipchat</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-9 col-sm-12 col-ml-auto">
+                                <label class="form-switch">
+                                    <input type="checkbox"><i class="form-icon"></i> Send me emails with news and tips
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="input-example-6">Message</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <textarea class="form-input" id="input-example-6" placeholder="Textarea"
+                                          rows="3"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-9 col-sm-12 col-ml-auto">
+                                <label class="form-checkbox">
+                                    <input type="checkbox"><i class="form-icon"></i> Remember me
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                ...
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Jquery -->
 <script src="js/jquery-3.3.1.min.js"></script>
