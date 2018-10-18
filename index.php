@@ -11,6 +11,11 @@ $stmt = $pdo->query('SELECT * FROM authors');
 while ($row = $stmt->fetch()) {
     // echo $row['author_name'] . "\n";
 }
+
+// Recupera os nomes dos coordenadores
+$stmt = $pdo->query('SELECT * FROM coordinators ORDER BY name');
+$coordinators = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -130,10 +135,12 @@ while ($row = $stmt->fetch()) {
                                 <label class="form-label">Source</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <select class="form-select" multiple="">
-                                    <option>Slack</option>
-                                    <option>Skype</option>
-                                    <option>Hipchat</option>
+                                <select class="form-select select-lg">
+                                    <?php if ($coordinators): ?>
+                                        <?php foreach ($coordinators as $coordinator): ?>
+                                            <option value="<?= $coordinator['id'] ?>"><?= $coordinator['name'] ?></option>
+                                        <?php endforeach; ?>
+                                    <?php endif ?>
                                 </select>
                             </div>
                         </div>
