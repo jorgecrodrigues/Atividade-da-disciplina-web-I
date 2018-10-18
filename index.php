@@ -91,7 +91,8 @@ $courses = $stmt->fetchAll();
             </div>
             <div class="modal-body">
                 <div class="content">
-                    <form class="form-horizontal" action="">
+                    <form class="form-horizontal" method="post" action="">
+
                         <!-- Título -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
@@ -167,31 +168,33 @@ $courses = $stmt->fetchAll();
                             </div>
                             <div class="col-9 col-sm-12">
                                 <label class="form-radio">
-                                    <input type="radio" name="published">
+                                    <input type="radio" name="published" value="1">
                                     <i class="form-icon"></i> Publicar
                                 </label>
                                 <label class="form-radio">
-                                    <input type="radio" name="published" checked="">
+                                    <input type="radio" name="published" value="0" checked="">
                                     <i class="form-icon"></i> Salvar em rascunho
                                 </label>
                             </div>
                         </div>
 
 
+                        <!-- Sobre -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
-                                <label class="form-label" for="input-example-6">Message</label>
+                                <label class="form-label" for="about">Sobre</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <textarea class="form-input" id="input-example-6" placeholder="Textarea"
+                                <textarea class="form-input" id="about" name="about"
+                                          placeholder="Digite mais informações sobre o minicurso"
                                           rows="3"></textarea>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <div class="col-9 col-sm-12 col-ml-auto">
-                                <label class="form-checkbox">
-                                    <input type="checkbox"><i class="form-icon"></i> Remember me
-                                </label>
+                            <div class="col-3 col-sm-12"></div>
+                            <div class="col-9 col-sm-12">
+                                <button class="btn" type="submit">Salvar</button>
                             </div>
                         </div>
                     </form>
@@ -207,6 +210,8 @@ $courses = $stmt->fetchAll();
 <script src="js/jquery-3.3.1.min.js"></script>
 <!-- Jquery Mask Plugin -->
 <script src="js/jquery.mask.min.js"></script>
+<!-- Faker JS -->
+<script src="js/faker.min.js"></script>
 <!-- Default JS -->
 <script src="js/default.js"></script>
 </body>

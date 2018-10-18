@@ -7,6 +7,16 @@
         });
         //
         $('#new').on('click', function () {
+            // Faker
+            faker.locale = "pt_BR";
+            $("#title").val(faker.lorem.words());
+            $("#description").val(faker.lorem.sentence());
+            $("#address").val(faker.address.streetAddress());
+            // Datas
+            var $a = new Date(faker.date.between('2015', '2019'));
+            $("#begin").val($a.getDate() + '/' + ($a.getMonth() + 1) + '/' + $a.getFullYear() + ' ' + $a.getHours() + ':' + $a.getMinutes());
+            $("#finish").val($a.getDate() + '/' + ($a.getMonth() + 1) + '/' + $a.getFullYear() + ' ' + $a.getHours() + ':' + $a.getMinutes());
+            // Mostra o modal
             $('.new').addClass('active');
         });
     });
