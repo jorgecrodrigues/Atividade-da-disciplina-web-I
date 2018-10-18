@@ -85,7 +85,7 @@ $coordinators = $stmt->fetchAll();
                 </p>
             </div>
             <div class="tile-action">
-                <button class="btn btn-primary">Join</button>
+                <button class="btn btn-success">Atualizar</button>
             </div>
         </div>
     <?php endforeach; ?>
