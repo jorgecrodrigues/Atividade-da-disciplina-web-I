@@ -5,6 +5,10 @@ date_default_timezone_set('America/Cuiaba');
 session_start();
 // Conexão com o banco de dados.
 require_once "connect.php";
+// Verifica se o usuário foi autenticado.
+if (empty($_SESSION["user"])) {
+    header('Location: login.php');
+}
 /**
  * Verifica se existem campos com valores
  *
@@ -19,10 +23,6 @@ function old($field)
     return '';
 }
 
-// Verifica se o usuário foi autenticado.
-if (empty($_SESSION["user"])) {
-    header('Location: login.php');
-}
 // Recupera os nomes dos coordenadores
 $stmt = $pdo->query('SELECT * FROM coordinators ORDER BY name');
 $coordinators = $stmt->fetchAll();
