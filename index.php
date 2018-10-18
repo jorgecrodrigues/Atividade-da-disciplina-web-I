@@ -12,8 +12,9 @@ $stmt = $pdo->query('SELECT * FROM coordinators ORDER BY name');
 $coordinators = $stmt->fetchAll();
 
 // Recupera os nomes os minicursos.
-$stmt = $pdo->query('SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id');
+$stmt = $pdo->query('SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id ORDER BY begin');
 $courses = $stmt->fetchAll();
+
 
 ?>
 
@@ -51,15 +52,11 @@ $courses = $stmt->fetchAll();
         </div>
     </div>
 </div>
-
 <div class="container">
-    <div class="columns">
-
-    </div>
-
+    <!-- Menu -->
     <ul class="tab">
         <li class="tab-item active">
-            <a class="badge" href="javascript:void(0)" data-badge="999">Próximos minicursos</a>
+            <a class="badge badge" href="javascript:void(0)" data-badge="999">Próximos minicursos</a>
         </li>
         <li class="tab-item">
             <a href="javascript:void(0)">Anteriores</a>
@@ -68,7 +65,7 @@ $courses = $stmt->fetchAll();
             <a id="new" href="javascript:void(0)">Adicionar minicurso</a>
         </li>
     </ul>
-
+    <!-- Lista de minicursos -->
     <?php foreach ($courses as $course): ?>
         <div class="tile">
             <div class="tile-icon">
@@ -84,53 +81,76 @@ $courses = $stmt->fetchAll();
             </div>
         </div>
     <?php endforeach; ?>
-
     <!-- Formulário de cadastro de minicurso -->
-    <div class="modal new" id="modal-id">
+    <div class="modal active new" id="modal-id">
         <a href="javascript:void(0)" class="modal-overlay" aria-label="Close"></a>
         <div class="modal-container">
             <div class="modal-header">
                 <a href="javascript:void(0)" class="btn btn-clear float-right" aria-label="Close"></a>
-                <div class="modal-title h5">Modal title</div>
+                <div class="modal-title h5">Adicionar novo minicurso</div>
             </div>
             <div class="modal-body">
                 <div class="content">
                     <form class="form-horizontal" action="">
+                        <!-- Título -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
-                                <label class="form-label" for="input-example-4">Name</label>
+                                <label class="form-label" for="title">Título</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <input class="form-input" id="input-example-4" type="text" placeholder="Name">
+                                <input class="form-input" id="title" name="title" type="text" placeholder="Name">
                             </div>
                         </div>
+
+                        <!-- Descrição -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
-                                <label class="form-label" for="input-example-5">Email</label>
+                                <label class="form-label" for="description">Descrição</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <input class="form-input" id="input-example-5" type="email" placeholder="Email">
+                                <input class="form-input" id="description" name="description" type="text"
+                                       placeholder="Descrição">
                             </div>
                         </div>
+
+                        <!-- Endereço -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
-                                <label class="form-label">Gender</label>
+                                <label class="form-label" for="address">Endereço</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <label class="form-radio">
-                                    <input type="radio" name="gender"><i class="form-icon"></i> Male
-                                </label>
-                                <label class="form-radio">
-                                    <input type="radio" name="gender" checked=""><i class="form-icon"></i> Female
-                                </label>
+                                <input class="form-input" id="address" name="address" type="text"
+                                       placeholder="Endereço">
                             </div>
                         </div>
+
+                        <!-- Data e horário -->
+                        <div class="form-group">
+                            <!-- Início -->
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label" for="begin">Data e hora</label>
+                            </div>
+                            <div class="col-3 col-sm-12">
+                                <input class="form-input" id="begin" name="begin" type="text"
+                                       placeholder="Data e hora de início">
+                            </div>
+                            <!-- Termino -->
+                            <div class="col-1 col-sm-12 col-ml-auto">
+                                <label class="form-label" for="finish">Até</label>
+                            </div>
+                            <div class="col-3 col-sm-12 col-ml-auto">
+                                <input class="form-input" id="finish" name="finish" type="text"
+                                       placeholder="Data e hora do termino">
+                            </div>
+                        </div>
+
+                        <!-- Coordenador -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
-                                <label class="form-label">Source</label>
+                                <label class="form-label">Coordenador</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <select class="form-select select-lg">
+                                <select class="form-select select-lg" name="coordinator_id">
                                     <?php if ($coordinators): ?>
                                         <?php foreach ($coordinators as $coordinator): ?>
                                             <option value="<?= $coordinator['id'] ?>"><?= $coordinator['name'] ?></option>
@@ -139,13 +159,25 @@ $courses = $stmt->fetchAll();
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Publicar -->
                         <div class="form-group">
-                            <div class="col-9 col-sm-12 col-ml-auto">
-                                <label class="form-switch">
-                                    <input type="checkbox"><i class="form-icon"></i> Send me emails with news and tips
+                            <div class="col-3 col-sm-12">
+                                <label class="form-label">Publicar?</label>
+                            </div>
+                            <div class="col-9 col-sm-12">
+                                <label class="form-radio">
+                                    <input type="radio" name="published">
+                                    <i class="form-icon"></i> Publicar
+                                </label>
+                                <label class="form-radio">
+                                    <input type="radio" name="published" checked="">
+                                    <i class="form-icon"></i> Salvar em rascunho
                                 </label>
                             </div>
                         </div>
+
+
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
                                 <label class="form-label" for="input-example-6">Message</label>
@@ -173,6 +205,8 @@ $courses = $stmt->fetchAll();
 </div>
 <!-- Jquery -->
 <script src="js/jquery-3.3.1.min.js"></script>
+<!-- Jquery Mask Plugin -->
+<script src="js/jquery.mask.min.js"></script>
 <!-- Default JS -->
 <script src="js/default.js"></script>
 </body>

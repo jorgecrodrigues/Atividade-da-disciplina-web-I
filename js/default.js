@@ -10,4 +10,22 @@
             $('.new').addClass('active');
         });
     });
+
+    // Jquery mask
+    $('#begin').mask('NN/NN/NNNN NN:NN', {
+        placeholder: "____/____/________ ____:____",
+        translation: {
+            'N': {
+                pattern: /[0-9]/, optional: false
+            }
+        }
+    });
+    $('#finish').mask('NN/NN/NNNN NN:NN', {
+        placeholder: "____/____/________ ____:____",
+        translation: {
+            'N': {
+                pattern: /[0-9]/, optional: false
+            }
+        }
+    });
 })(this, this.$ || this.jQuery || false);
