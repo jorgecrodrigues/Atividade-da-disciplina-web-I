@@ -60,6 +60,9 @@ while ($row = $stmt->fetch()) {
         <li class="tab-item">
             <a href="#tabs">Anteriores</a>
         </li>
+        <li class="tab-item">
+            <a id="new" href="#tabs">Cadastrar novo</a>
+        </li>
     </ul>
 
     <?php $courses = array(1, 2, 3) ?>
@@ -82,5 +85,9 @@ while ($row = $stmt->fetch()) {
         </div>
     <?php endforeach; ?>
 </div>
+<!-- Jquery -->
+<script src="js/jquery-3.3.1.min.js"></script>
+<!-- Default JS -->
+<script src="js/default.js"></script>
 </body>
 </html>
