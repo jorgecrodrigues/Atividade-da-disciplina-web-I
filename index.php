@@ -1,6 +1,21 @@
 <?php
+
 // Conexão com o banco de dados.
 require_once "connect.php";
+
+/**
+ * Verifica se existem campos com valores
+ *
+ * @param $field
+ * @return string
+ */
+function old($field)
+{
+    if ($_POST && array_key_exists($field, $_POST)) {
+        return $_POST[$field];
+    }
+    return '';
+}
 
 session_start();
 if (empty($_SESSION["user"])) {
@@ -14,8 +29,33 @@ $coordinators = $stmt->fetchAll();
 // Recupera os nomes os minicursos.
 $stmt = $pdo->query('SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id ORDER BY begin');
 $courses = $stmt->fetchAll();
+if ($_POST) {
+    // Faz a validação dos campos
+    $fields = [
+        'title', 'description', 'address', 'begin', 'finish', 'coordinator_id', 'published', 'about'
+    ];
+    foreach ($fields as $field) {
+        if (!array_key_exists($field, $_POST)) {
+            $error = "O campo $field é obrigatório";
+            // $error = "Todos os campos são obrigatórios";
+            break;
+        }
+    }
+    // CONVERTE AS DATAS
+    $_POST['begin'] = date_create_from_format('d/m/Y H:i', $_POST['begin'])->format('Y-m-d H:i:s');
+    $_POST['finish'] = date_create_from_format('d/m/Y H:i', $_POST['finish'])->format('Y-m-d H:i:s');
 
+    $data = $_POST;
+    if (!isset($error)) {
+        try {
+            $sql = "INSERT INTO courses (title, description, address, begin, finish, coordinator_id, published, about) VALUES (:title, :description, :address, :begin, :finish, :coordinator_id, :published, :about)";
+            $pdo->prepare($sql)->execute($data);
+        } catch (PDOException $exception) {
 
+        }
+    }
+    header("Location: " . $_SERVER['REQUEST_URI']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +96,7 @@ $courses = $stmt->fetchAll();
     <!-- Menu -->
     <ul class="tab">
         <li class="tab-item active">
-            <a class="badge badge" href="javascript:void(0)" data-badge="999">Próximos minicursos</a>
+            <a class="badge badge" href="javascript:void(0)" data-badge="<?= count($courses) ?>">Próximos minicursos</a>
         </li>
         <li class="tab-item">
             <a href="javascript:void(0)">Anteriores</a>
@@ -82,7 +122,7 @@ $courses = $stmt->fetchAll();
         </div>
     <?php endforeach; ?>
     <!-- Formulário de cadastro de minicurso -->
-    <div class="modal active new" id="modal-id">
+    <div class="modal new <?= isset($error) ? 'active' : '' ?>">
         <a href="javascript:void(0)" class="modal-overlay" aria-label="Close"></a>
         <div class="modal-container">
             <div class="modal-header">
@@ -99,7 +139,8 @@ $courses = $stmt->fetchAll();
                                 <label class="form-label" for="title">Título</label>
                             </div>
                             <div class="col-9 col-sm-12">
-                                <input class="form-input" id="title" name="title" type="text" placeholder="Name">
+                                <input class="form-input" id="title" name="title" type="text" placeholder="Name"
+                                       value="<?= old('title') ?>">
                             </div>
                         </div>
 
@@ -110,7 +151,7 @@ $courses = $stmt->fetchAll();
                             </div>
                             <div class="col-9 col-sm-12">
                                 <input class="form-input" id="description" name="description" type="text"
-                                       placeholder="Descrição">
+                                       placeholder="Descrição" value="<?= old('description') ?>">
                             </div>
                         </div>
 
@@ -121,7 +162,7 @@ $courses = $stmt->fetchAll();
                             </div>
                             <div class="col-9 col-sm-12">
                                 <input class="form-input" id="address" name="address" type="text"
-                                       placeholder="Endereço">
+                                       placeholder="Endereço" value="<?= old('address') ?>">
                             </div>
                         </div>
 
@@ -133,7 +174,7 @@ $courses = $stmt->fetchAll();
                             </div>
                             <div class="col-3 col-sm-12">
                                 <input class="form-input" id="begin" name="begin" type="text"
-                                       placeholder="Data e hora de início">
+                                       placeholder="Data e hora de início" value="<?= old('begin') ?>">
                             </div>
                             <!-- Termino -->
                             <div class="col-1 col-sm-12 col-ml-auto">
@@ -141,7 +182,7 @@ $courses = $stmt->fetchAll();
                             </div>
                             <div class="col-3 col-sm-12 col-ml-auto">
                                 <input class="form-input" id="finish" name="finish" type="text"
-                                       placeholder="Data e hora do termino">
+                                       placeholder="Data e hora do termino" value="<?= old('finish') ?>">
                             </div>
                         </div>
 
@@ -154,7 +195,10 @@ $courses = $stmt->fetchAll();
                                 <select class="form-select select-lg" name="coordinator_id">
                                     <?php if ($coordinators): ?>
                                         <?php foreach ($coordinators as $coordinator): ?>
-                                            <option value="<?= $coordinator['id'] ?>"><?= $coordinator['name'] ?></option>
+                                            <option value="<?= $coordinator['id'] ?>"
+                                                <?= old('coordinator_id') == $coordinator['id'] ? 'selected' : '' ?>>
+                                                <?= $coordinator['name'] ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     <?php endif ?>
                                 </select>
@@ -187,7 +231,7 @@ $courses = $stmt->fetchAll();
                             <div class="col-9 col-sm-12">
                                 <textarea class="form-input" id="about" name="about"
                                           placeholder="Digite mais informações sobre o minicurso"
-                                          rows="3"></textarea>
+                                          rows="3"><?= old('about') ?></textarea>
                             </div>
                         </div>
 
@@ -201,7 +245,9 @@ $courses = $stmt->fetchAll();
                 </div>
             </div>
             <div class="modal-footer">
-                ...
+                <?php if (isset($error)): ?>
+                    <div class="text-error text-center"><?= $error ?></div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

@@ -16,6 +16,8 @@
             var $a = new Date(faker.date.between('2015', '2019'));
             $("#begin").val($a.getDate() + '/' + ($a.getMonth() + 1) + '/' + $a.getFullYear() + ' ' + $a.getHours() + ':' + $a.getMinutes());
             $("#finish").val($a.getDate() + '/' + ($a.getMonth() + 1) + '/' + $a.getFullYear() + ' ' + $a.getHours() + ':' + $a.getMinutes());
+
+            $("#about").val(faker.lorem.paragraphs());
             // Mostra o modal
             $('.new').addClass('active');
         });
