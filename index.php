@@ -6,15 +6,14 @@ session_start();
 if (empty($_SESSION["user"])) {
     header('Location: login.php');
 }
-// print_r($_SESSION);
-$stmt = $pdo->query('SELECT * FROM authors');
-while ($row = $stmt->fetch()) {
-    // echo $row['author_name'] . "\n";
-}
 
 // Recupera os nomes dos coordenadores
 $stmt = $pdo->query('SELECT * FROM coordinators ORDER BY name');
 $coordinators = $stmt->fetchAll();
+
+// Recupera os nomes os minicursos.
+$stmt = $pdo->query('SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id');
+$courses = $stmt->fetchAll();
 
 ?>
 
@@ -47,7 +46,7 @@ $coordinators = $stmt->fetchAll();
             <p class="empty-subtitle">Bem vindo <?php echo $_SESSION['user']['name'] ?></p>
             <p class="empty-subtitle">Clique no botão abaixo para cadastrar um novo minicurso</p>
             <div class="empty-action">
-                <button id="new" class="btn">Adicionar minicurso</button>
+                <a class="btn btn-error" href="logout.php">Logout</a>
             </div>
         </div>
     </div>
@@ -60,47 +59,43 @@ $coordinators = $stmt->fetchAll();
 
     <ul class="tab">
         <li class="tab-item active">
-            <a class="badge" href="#tabs" data-badge="999">Próximos minicursos</a>
+            <a class="badge" href="javascript:void(0)" data-badge="999">Próximos minicursos</a>
         </li>
         <li class="tab-item">
-            <a href="#tabs">Anteriores</a>
+            <a href="javascript:void(0)">Anteriores</a>
         </li>
         <li class="tab-item">
-            <a id="sync" href="#sync">Sincronizar</a>
+            <a id="new" href="javascript:void(0)">Adicionar minicurso</a>
         </li>
     </ul>
 
-    <?php $courses = array(1, 2, 3) ?>
     <?php foreach ($courses as $course): ?>
         <div class="tile">
             <div class="tile-icon">
                 <object class="example-tile-icon" type="image/svg+xml" data="svg/user%20(1).svg"></object>
             </div>
             <div class="tile-content">
-                <p class="tile-title">The Avengers</p>
-                <p class="tile-subtitle text-gray">
-                    Earth's Mightiest Heroes joined forces to take on threats that were
-                    too
-                    big for any one hero to tackle...
-                </p>
+                <p class="tile-title"><?= $course['title'] ?></p>
+                <p class="tile-title"><?= $course['description'] ?></p>
+                <p class="tile-subtitle text-gray"><?= $course['about'] ?></p>
             </div>
             <div class="tile-action">
-                <button class="btn btn-success">Atualizar</button>
+                <button class="btn btn-success" data-course="<?= $course['id'] ?>">Atualizar</button>
             </div>
         </div>
     <?php endforeach; ?>
 
     <!-- Formulário de cadastro de minicurso -->
     <div class="modal new" id="modal-id">
-        <a href="#close" class="modal-overlay" aria-label="Close"></a>
+        <a href="javascript:void(0)" class="modal-overlay" aria-label="Close"></a>
         <div class="modal-container">
             <div class="modal-header">
-                <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
+                <a href="javascript:void(0)" class="btn btn-clear float-right" aria-label="Close"></a>
                 <div class="modal-title h5">Modal title</div>
             </div>
             <div class="modal-body">
                 <div class="content">
-                    <form class="form-horizontal" action="#forms">
+                    <form class="form-horizontal" action="">
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
                                 <label class="form-label" for="input-example-4">Name</label>
