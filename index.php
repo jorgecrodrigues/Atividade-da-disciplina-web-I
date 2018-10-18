@@ -1,8 +1,10 @@
 <?php
-
+// Define o timezone
+date_default_timezone_set('America/Cuiaba');
+// Inicia a sessão.
+session_start();
 // Conexão com o banco de dados.
 require_once "connect.php";
-
 /**
  * Verifica se existem campos com valores
  *
@@ -17,18 +19,26 @@ function old($field)
     return '';
 }
 
-session_start();
+// Verifica se o usuário foi autenticado.
 if (empty($_SESSION["user"])) {
     header('Location: login.php');
 }
-
 // Recupera os nomes dos coordenadores
 $stmt = $pdo->query('SELECT * FROM coordinators ORDER BY name');
 $coordinators = $stmt->fetchAll();
-
 // Recupera os nomes os minicursos.
-$stmt = $pdo->query('SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id ORDER BY begin');
+$now = date('Y-m-d H:i');
+
+if (key_exists('b', $_GET)) {
+    $sql = "SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id WHERE finish <= :now";
+} else {
+    $sql = "SELECT * FROM courses INNER JOIN coordinators ON courses.coordinator_id = coordinators.id WHERE finish >= :now";
+}
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['now' => $now]);
 $courses = $stmt->fetchAll();
+
+// Salva um minicurso.
 if ($_POST) {
     // Faz a validação dos campos
     $fields = [
@@ -95,12 +105,25 @@ if ($_POST) {
 <div class="container">
     <!-- Menu -->
     <ul class="tab">
-        <li class="tab-item active">
-            <a class="badge badge" href="javascript:void(0)" data-badge="<?= count($courses) ?>">Próximos minicursos</a>
-        </li>
-        <li class="tab-item">
-            <a href="javascript:void(0)">Anteriores</a>
-        </li>
+        <?php if (key_exists('b', $_GET)): ?>
+            <li class="tab-item">
+                <a class="" href="?a">Próximos minicursos</a>
+            </li>
+            <li class="tab-item active">
+                <a class="badge badge" href="javascript:void(0)" data-badge="<?= count($courses) ?>">
+                    Anteriores
+                </a>
+            </li>
+        <?php else: ?>
+            <li class="tab-item active">
+                <a class="badge badge" href="javascript:void(0)" data-badge="<?= count($courses) ?>">
+                    Próximos minicursos
+                </a>
+            </li>
+            <li class="tab-item">
+                <a href="?b">Anteriores</a>
+            </li>
+        <?php endif; ?>
         <li class="tab-item">
             <a id="new" href="javascript:void(0)">Adicionar minicurso</a>
         </li>
