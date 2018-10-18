@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+@import url('https://fonts.googleapis.com/css?family=Dosis');
+
+body {
+    /* font-family: 'Indie Flower', cursive;*/
+    font-family: 'Dosis', sans-serif;
+    font-size: 20px;
+}
+
+.container {
+    margin: 10px auto;
+    width: 80%;
+}
+
+.empty-title {
+    font-family: 'Indie Flower', cursive;
+    font-size: 3em;
+    color: #ea6b72;
+}
+
+.empty-icon-brand {
+    width: 400px;
+}
+
+.tile {
+    margin-top: 30px;
+}
+
+.example-tile-icon {
+    margin-right: 30px;
+    width: 80px;
+}
