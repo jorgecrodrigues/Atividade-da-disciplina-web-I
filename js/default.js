@@ -1,4 +1,4 @@
-;(function (window, $) {
+(function (window, $) {
     "use string";
     $(window.document).ready(function () {
         //
@@ -23,8 +23,8 @@
         });
     });
 
-    // Jquery mask
-    $('.beginMask').mask('NN/NN/NNNN NN:NN', {
+    // Jquery mask where <input name="(parametro)">
+    $('input[name=begin]').mask('NN/NN/NNNN NN:NN', {
         placeholder: "____/____/________ ____:____",
         translation: {
             'N': {
@@ -32,7 +32,7 @@
             }
         }
     });
-    $('.finishMask').mask('NN/NN/NNNN NN:NN', {
+    $('input[name=finish]').mask('NN/NN/NNNN NN:NN', {
         placeholder: "____/____/________ ____:____",
         translation: {
             'N': {
@@ -65,7 +65,7 @@
             } else {
                 alert("Recurso Alterado Com sucesso");
             }
-            document.getElementById('updateCouseModel').className = "modal";
+            selectAll();
         });
     });
 
@@ -81,5 +81,17 @@ function showCourse(course) {
         document.getElementById("updateCourse").innerHTML = this.responseText;
     };
     xmlhttp.open("GET", "../ajax.php?id=" + id, true);
+    xmlhttp.send();
+}
+
+function selectAll() {
+    var query = location.search.slice(1);
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        document.getElementById("application").innerHTML = this.responseText;
+    };
+
+    xmlhttp.open("GET", "../ajaxSelectAll.php?"+query, true);
     xmlhttp.send();
 }

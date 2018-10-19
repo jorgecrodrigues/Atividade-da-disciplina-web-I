@@ -102,7 +102,7 @@ if ($_POST) {
         </div>
     </div>
 </div>
-<div class="container">
+<div id="application" class="container">
     <!-- Menu -->
     <ul class="tab">
         <?php if (key_exists('b', $_GET)): ?>
