@@ -18,9 +18,15 @@ if (key_exists('id', $_GET)) {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(":id", $id);
     $stmt->execute();
+
+    // Recupera os nomes dos coordenadores
+    $resultado = $pdo->query('SELECT * FROM coordinators ORDER BY name');
+    $coordinators = $resultado->fetchAll();
 }
 ?>
 <?php foreach ($stmt as $course): ?>
+
+    <input id="id" hidden value="<?= $course['id'] ?>">
     <!-- Título -->
     <div class="form-group">
         <div class="col-3 col-sm-12">
@@ -28,7 +34,7 @@ if (key_exists('id', $_GET)) {
         </div>
         <div class="col-9 col-sm-12">
             <input class="form-input" id="title" name="title" type="text" placeholder="Name"
-                   value=" <?= $course['title'] ?>">
+                   value="<?= $course['title'] ?>">
         </div>
     </div>
 
@@ -39,7 +45,7 @@ if (key_exists('id', $_GET)) {
         </div>
         <div class="col-9 col-sm-12">
             <input class="form-input" id="description" name="description" type="text"
-                   placeholder="Descrição" value=" <?= $course['description'] ?>">
+                   placeholder="Descrição" value="<?= $course['description'] ?>">
         </div>
     </div>
 
@@ -61,16 +67,36 @@ if (key_exists('id', $_GET)) {
             <label class="form-label" for="begin">Data e hora</label>
         </div>
         <div class="col-3 col-sm-12">
-            <input class="form-input" id="begin" name="begin" type="text"
-                   placeholder="Data e hora de início" value="<?= $course['begin'] ?>">
+            <input class="form-input beginMask" id="begin" name="begin" type="text"
+                   placeholder="Data e hora de início" value="<?= date('d/m/Y H:i', strtotime($course['begin'])) ?>">
         </div>
         <!-- Termino -->
         <div class="col-1 col-sm-12 col-ml-auto">
             <label class="form-label" for="finish">Até</label>
         </div>
         <div class="col-3 col-sm-12 col-ml-auto">
-            <input class="form-input" id="finish" name="finish" type="text"
-                   placeholder="Data e hora do termino" value="<?= $course['finish'] ?>">
+            <input class="form-input finishMask" id="finish" name="finish" type="text"
+                   placeholder="Data e hora do termino"
+                   value="<?= date('d/m/Y H:i', strtotime($course['finish'])) ?>">
+        </div>
+    </div>
+
+        <!-- Coordenador -->
+    <div class="form-group">
+        <div class="col-3 col-sm-12">
+            <label class="form-label">Coordenador</label>
+        </div>
+        <div class="col-9 col-sm-12">
+            <select id="coordinator_id" class="form-select select-lg" name="coordinator_id">
+                <?php if ($coordinators): ?>
+                    <?php foreach ($coordinators as $coordinator): ?>
+                        <option value="<?= $coordinator['id'] ?>"
+                            <?= $coordinator['id'] == $course['coordinator_id'] ? 'selected' : '' ?>>
+                            <?= $coordinator['name'] ?>
+                        </option>
+                    <?php endforeach; ?>
+                <?php endif ?>
+            </select>
         </div>
     </div>
 
@@ -104,7 +130,7 @@ if (key_exists('id', $_GET)) {
     <div class="form-group">
         <div class="col-3 col-sm-12"></div>
         <div class="col-9 col-sm-12">
-            <button class="btn" type="submit">Salvar</button>
+            <button class="btn" type="submit">Salvar Alterações</button>
         </div>
     </div>
 <?php endforeach; ?>

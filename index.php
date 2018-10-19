@@ -52,8 +52,8 @@ if ($_POST) {
         }
     }
     // CONVERTE AS DATAS
-    $_POST['begin'] = date_create_from_format('d/m/Y H:i', $_POST['begin'])->format('Y-m-d H:i:s');
-    $_POST['finish'] = date_create_from_format('d/m/Y H:i', $_POST['finish'])->format('Y-m-d H:i:s');
+    $_POST['begin'] = date('Y-m-d H:i', strtotime($_POST['begin']));
+    $_POST['finish'] = date('Y-m-d H:i', strtotime($_POST['finish']));
 
     $data = $_POST;
     if (!isset($error)) {
@@ -158,111 +158,6 @@ if ($_POST) {
                 <div class="content">
                     <form id="updateCourse" class="form-horizontal" method="post" action="">
 
-                        <!-- Título -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label" for="title">Título</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <input class="form-input" id="title" name="title" type="text" placeholder="Name"
-                                       value="<?= old('title') ?>">
-                            </div>
-                        </div>
-
-                        <!-- Descrição -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label" for="description">Descrição</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <input class="form-input" id="description" name="description" type="text"
-                                       placeholder="Descrição" value="<?= old('description') ?>">
-                            </div>
-                        </div>
-
-                        <!-- Endereço -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label" for="address">Endereço</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <input class="form-input" id="address" name="address" type="text"
-                                       placeholder="Endereço" value="<?= old('address') ?>">
-                            </div>
-                        </div>
-
-                        <!-- Data e horário -->
-                        <div class="form-group">
-                            <!-- Início -->
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label" for="begin">Data e hora</label>
-                            </div>
-                            <div class="col-3 col-sm-12">
-                                <input class="form-input" id="begin" name="begin" type="text"
-                                       placeholder="Data e hora de início" value="<?= old('begin') ?>">
-                            </div>
-                            <!-- Termino -->
-                            <div class="col-1 col-sm-12 col-ml-auto">
-                                <label class="form-label" for="finish">Até</label>
-                            </div>
-                            <div class="col-3 col-sm-12 col-ml-auto">
-                                <input class="form-input" id="finish" name="finish" type="text"
-                                       placeholder="Data e hora do termino" value="<?= old('finish') ?>">
-                            </div>
-                        </div>
-
-                        <!-- Coordenador -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label">Coordenador</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <select class="form-select select-lg" name="coordinator_id">
-                                    <?php if ($coordinators): ?>
-                                        <?php foreach ($coordinators as $coordinator): ?>
-                                            <option value="<?= $coordinator['id'] ?>"
-                                                <?= old('coordinator_id') == $coordinator['id'] ? 'selected' : '' ?>>
-                                                <?= $coordinator['name'] ?>
-                                            </option>
-                                        <?php endforeach; ?>
-                                    <?php endif ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Publicar -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label">Publicar?</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <label class="form-radio">
-                                    <input type="radio" name="published" value="1">
-                                    <i class="form-icon"></i> Publicar
-                                </label>
-                                <label class="form-radio">
-                                    <input type="radio" name="published" value="0" checked="">
-                                    <i class="form-icon"></i> Salvar em rascunho
-                                </label>
-                            </div>
-                        </div>
-                        <!-- Sobre -->
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12">
-                                <label class="form-label" for="about">Sobre</label>
-                            </div>
-                            <div class="col-9 col-sm-12">
-                                <textarea class="form-input" id="about" name="about"
-                                          placeholder="Digite mais informações sobre o minicurso"
-                                          rows="3"><?= old('about') ?></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-3 col-sm-12"></div>
-                            <div class="col-9 col-sm-12">
-                                <button class="btn" type="submit">Salvar</button>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <?php if (isset($error)): ?>
@@ -282,7 +177,6 @@ if ($_POST) {
             <div class="modal-body">
                 <div class="content">
                     <form class="form-horizontal" method="post" action="">
-
                         <!-- Título -->
                         <div class="form-group">
                             <div class="col-3 col-sm-12">
@@ -323,7 +217,7 @@ if ($_POST) {
                                 <label class="form-label" for="begin">Data e hora</label>
                             </div>
                             <div class="col-3 col-sm-12">
-                                <input class="form-input" id="begin" name="begin" type="text"
+                                <input class="form-input beginMask" id="begin" name="begin" type="text"
                                        placeholder="Data e hora de início" value="<?= old('begin') ?>">
                             </div>
                             <!-- Termino -->
@@ -331,7 +225,7 @@ if ($_POST) {
                                 <label class="form-label" for="finish">Até</label>
                             </div>
                             <div class="col-3 col-sm-12 col-ml-auto">
-                                <input class="form-input" id="finish" name="finish" type="text"
+                                <input class="form-input finishMask" id="finish" name="finish" type="text"
                                        placeholder="Data e hora do termino" value="<?= old('finish') ?>">
                             </div>
                         </div>

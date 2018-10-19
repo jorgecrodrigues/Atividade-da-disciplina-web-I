@@ -24,7 +24,7 @@
     });
 
     // Jquery mask
-    $('#begin').mask('NN/NN/NNNN NN:NN', {
+    $('.beginMask').mask('NN/NN/NNNN NN:NN', {
         placeholder: "____/____/________ ____:____",
         translation: {
             'N': {
@@ -32,7 +32,7 @@
             }
         }
     });
-    $('#finish').mask('NN/NN/NNNN NN:NN', {
+    $('.finishMask').mask('NN/NN/NNNN NN:NN', {
         placeholder: "____/____/________ ____:____",
         translation: {
             'N': {
@@ -40,6 +40,35 @@
             }
         }
     });
+    $('#updateCourse').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: 'ajaxUpdate.php',
+            type: 'post',
+            dataType: 'html',
+            data: {
+                id: $('#id').val(),
+                title: $('#title').val(),
+                description: $('#description').val(),
+                address: $('#address').val(),
+                finish: $('#finish').val(),
+                about: $('#about').val(),
+                published: $('input[name=published]:checked', '#updateCourse').val(),
+                begin: $('#begin').val(),
+                coordinator_id: $('#coordinator_id').val()
+            }
+        }).done(function (data) {
+
+            if (data) {
+                alert("Ocorreu o seguinte erro: " + data);
+            } else {
+                alert("Recurso Alterado Com sucesso");
+            }
+            document.getElementById('updateCouseModel').className = "modal";
+        });
+    });
+
 })(this, this.$ || this.jQuery || false);
 
 function showCourse(course) {
@@ -51,6 +80,6 @@ function showCourse(course) {
     xmlhttp.onreadystatechange = function () {
         document.getElementById("updateCourse").innerHTML = this.responseText;
     };
-    xmlhttp.open("GET", "../ajax.php?id="+id, true);
+    xmlhttp.open("GET", "../ajax.php?id=" + id, true);
     xmlhttp.send();
 }
