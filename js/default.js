@@ -41,3 +41,16 @@
         }
     });
 })(this, this.$ || this.jQuery || false);
+
+function showCourse(course) {
+    var id = course.getAttribute("data-course");
+
+    document.getElementById('updateCouseModel').className = "modal active";
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        document.getElementById("updateCourse").innerHTML = this.responseText;
+    };
+    xmlhttp.open("GET", "../ajax.php?id="+id, true);
+    xmlhttp.send();
+}
