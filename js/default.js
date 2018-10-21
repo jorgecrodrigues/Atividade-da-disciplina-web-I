@@ -79,8 +79,25 @@ function showCourse(course) {
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function () {
         document.getElementById("updateCourse").innerHTML = this.responseText;
+        // Jquery mask where <input name="(parametro)">
+        $('input[name=begin]').mask('NN/NN/NNNN NN:NN', {
+            placeholder: "____/____/________ ____:____",
+            translation: {
+                'N': {
+                    pattern: /[0-9]/, optional: false
+                }
+            }
+        });
+        $('input[name=finish]').mask('NN/NN/NNNN NN:NN', {
+            placeholder: "____/____/________ ____:____",
+            translation: {
+                'N': {
+                    pattern: /[0-9]/, optional: false
+                }
+            }
+        });
     };
-    xmlhttp.open("GET", "../ajax.php?id=" + id, true);
+    xmlhttp.open("GET", "ajax.php?id=" + id, true);
     xmlhttp.send();
 }
 
@@ -92,6 +109,6 @@ function selectAll() {
         document.getElementById("application").innerHTML = this.responseText;
     };
 
-    xmlhttp.open("GET", "../ajaxSelectAll.php?"+query, true);
+    xmlhttp.open("GET", "ajaxSelectAll.php?"+query, true);
     xmlhttp.send();
 }

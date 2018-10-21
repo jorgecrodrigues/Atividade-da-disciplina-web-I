@@ -81,7 +81,7 @@ if (key_exists('id', $_GET)) {
         </div>
     </div>
 
-        <!-- Coordenador -->
+    <!-- Coordenador -->
     <div class="form-group">
         <div class="col-3 col-sm-12">
             <label class="form-label">Coordenador</label>

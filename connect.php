@@ -6,17 +6,17 @@
  * Time: 19:01
  */
 
-/*$host = '127.0.0.1';
+$host = '127.0.0.1';
 $db   = 'web';
 $user = 'laravel';
 $pass = 'nHsZ3ceCjN6W6Dff';
-$charset = 'utf8mb4';*/
+$charset = 'utf8mb4';
 
-$host = 'localhost';
+/*$host = 'localhost';
 $db = 'jorge';
 $user = 'root';
 $pass = '';
-$charset = 'utf8mb4';
+$charset = 'utf8mb4';*/
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 $options = [
